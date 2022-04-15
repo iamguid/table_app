@@ -1,23 +1,28 @@
 import React from 'react';
 import './Table.css';
+import { ITableBodyProps, TableBody } from './TableBody';
+import { TableContext } from './TableContext';
+import { ITableCol, ITableHeadProps, TableHead } from './TableHead';
 
-export const defaultRenderHead = () => {}
-
-export const defaultRenderHeadCell = () => {}
-
-export const defaultRenderRow = () => {}
-
-export const defaultRenderCell = () => {}
-
-interface ITableProps {
-  renderHead?: () => React.ReactNode;
-  renderHeadCell?: () => React.ReactNode;
-  renderRow?: () => React.ReactNode;
-  renderCell?: () => React.ReactNode;
+export interface ITableProps {
+  columns: ITableCol[];
+  children: React.ReactNode;
 }
 
-export const Table = ({ ...props }: ITableProps) => {
-  return (
+type ExtendedReactFC = React.FC<ITableProps> & {
+  Head: React.FC<ITableHeadProps>,
+  Body: React.FC<ITableBodyProps>,
+} 
 
+export const Table: ExtendedReactFC = ({ columns, children }: ITableProps) => {
+  return (
+    <TableContext.Provider value={{columns}}>
+      <table className='table'>
+        {children}
+      </table>
+    </TableContext.Provider>
   )
 }
+
+Table.Head = TableHead;
+Table.Body = TableBody;
