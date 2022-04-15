@@ -48,28 +48,32 @@ export const TableBody = ({
   renderRow = defaultRenderRow,
   renderCell = defaultRenderCell,
 }: ITableBodyProps) => {
-
   const context = useContext(TableContext);
+
+  const RenderCell = renderCell;
+  const RenderRow = renderRow;
+
   const columns = context.columns;
 
   const rowsElements = rows.map(row => {
     const rowId = rowIdGetter(row);
 
     const cellsElements = columns.map((col, colIndex) => {
-      return renderCell({
-        key: rowId + col.id,
-        row,
-        columns,
-        colIndex
-      })
+      return (
+        <RenderCell
+          key={rowId + col.id}
+          row={row}
+          columns={columns}
+          colIndex={colIndex}
+        />
+      )
     })
 
-    return renderRow({
-      key: rowId,
-      columns,
-      row,
-      children: cellsElements
-    })
+    return (
+      <RenderRow key={rowId} columns={columns} row={row}>
+        {cellsElements}
+      </RenderRow>
+    );
   });
   
   return <tbody>{rowsElements}</tbody>;
