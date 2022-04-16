@@ -1,44 +1,36 @@
+import { observer } from "mobx-react-lite";
 import { Table } from "../Table/Table";
 import { CellRender } from "../Table/TableBody";
-import { ITableCol } from "../Table/TableHead";
+import { IRichTable } from "./IRichTable";
 import { RichTableContext } from "./RichTableContext";
 import { RichTableHead } from "./RichTableHead";
 import { RichTableHeadCell } from "./RichTableHeadCell";
 import { RichTableRow } from "./RichTableRow";
 
-export interface IRichTableProps {
-  columns: ITableCol[];
-  rows: any[];
+export type SortOrder = 'asc' | 'desc';
+
+export type IRichTableProps = {
+  logic: IRichTable<any>; 
   cellRender: CellRender;
-  rowIdGetter: (row: any) => string;
-  isRowSelected: (row: any) => boolean;
-  onRowSelectToggle: (row: any, select: boolean) => void;
-  onRowDelete: (row: any) => void;
 }
 
-export const RichTable = ({
-  columns,
-  rows,
-  cellRender,
-  rowIdGetter,
-  isRowSelected,
-  onRowSelectToggle,
-  onRowDelete,
-}: IRichTableProps) => {
-  return (
-    <RichTableContext.Provider value={{isRowSelected, onRowSelectToggle, onRowDelete}}>
-      <Table columns={columns}>
-        <Table.Head
-          renderHead={RichTableHead}
-          renderHeadCell={RichTableHeadCell}
-        />
-        <Table.Body 
-          rows={rows}
-          rowIdGetter={rowIdGetter}
-          renderCell={cellRender}
-          renderRow={RichTableRow}
-        />
-      </Table>
-    </RichTableContext.Provider>
-  );
-}
+export const RichTable = observer(({logic, cellRender}: IRichTableProps) => (
+  <RichTableContext.Provider value={{
+    isRowSelected: logic.isRowSelected,
+    onRowSelectToggle: logic.onRowSelectToggle,
+    onRowDelete: logic.onRowDelete,
+  }}>
+    <Table columns={logic.columns}>
+      <Table.Head
+        renderHead={RichTableHead}
+        renderHeadCell={RichTableHeadCell}
+      />
+      <Table.Body 
+        rows={logic.rows}
+        rowIdGetter={logic.rowIdGetter}
+        renderCell={cellRender}
+        renderRow={RichTableRow}
+      />
+    </Table>
+  </RichTableContext.Provider>
+))

@@ -1,8 +1,9 @@
-import { useCallback } from '@storybook/addons';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Reducer, useReducer } from 'react';
+import { autorun } from 'mobx';
 import { defaultRenderCell } from '../Table/TableBody';
 import { ITableCol } from '../Table/TableHead';
+import { AbstractRichTableLogic } from './AbstractRichTableLogic';
+import { IRichTable } from './IRichTable';
 import { RichTable } from './RichTable';
 
 export default {
@@ -16,18 +17,7 @@ interface IRow {
   col2: string;
 }
 
-interface Action<TPayload> {
-  type: string;
-  payload: TPayload;
-}
-
-interface State {
-  selected: Set<string>;
-  columns: ITableCol[];
-  rows: IRow[];
-}
-
-let columns: ITableCol[] = [
+const columns: ITableCol[] = [
   {
     id: 'col1',
     label: 'Test col 1'
@@ -38,59 +28,57 @@ let columns: ITableCol[] = [
   }
 ];
 
-let rows: IRow[] = [
+const rows: IRow[] = [
   {id: '1', col1: 'row 1 col 1', col2: 'row 1 col 2'},
   {id: '2', col1: 'row 2 col 1', col2: 'row 2 col 2'},
   {id: '3', col1: 'row 3 col 1', col2: 'row 3 col 2'},
   {id: '4', col1: 'row 4 col 1', col2: 'row 4 col 2'},
 ];
 
-const RichTableTemplate: ComponentStory<typeof RichTable> = (args) => {
-  const reducer: Reducer<State, Action<string>> = (state, action) => {
-    switch (action.type) {
-      case 'select':
-        state.selected.add(action.payload);
-        break;
-      case 'unselect':
-        state.selected.delete(action.payload);
-        break;
-      case 'delete':
-        rows = rows.filter(row => row.id !== action.payload);
-        break;
-      default:
-        throw new Error('Unexpected action ' + action.type);
-    }
-
-    return { selected: new Set(state.selected), columns, rows };
+class RichTableLogicMock extends AbstractRichTableLogic<IRow> {
+  public reloadAllRows = async (): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this._rawRows = rows;
+        resolve();
+      }, 1000)
+    });
   }
 
-  const [state, dispatch] = useReducer(reducer, { selected: new Set<string>(), columns, rows });
+  public rowDeleteRequest = async (rowId: string): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000)
+    });
+  }
 
-  const selectCb = useCallback((row: IRow, selected: boolean) => {
-    if (selected) {
-      dispatch({ type: 'select', payload: row.id })
-    } else {
-      dispatch({ type: 'unselect', payload: row.id })
-    }
-  })
+  public rowsDeleteRequest = async (rowsIds: Set<string>): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000)
+    });
+  }
 
-  const isRowSelectedCb = useCallback((row: IRow) => {
-    return state.selected.has(row.id);
-  })
+  public rowIdGetter = (row: IRow): string => {
+      return row.id;
+  }
+}
 
-  const deleteCb = useCallback((row: IRow) => {
-    dispatch({ type: 'delete', payload: row.id });
-  })
+const logic = new RichTableLogicMock(columns);
 
+logic.reloadAllRows();
+
+autorun(() => {
+  console.log(logic.rows);
+})
+
+const RichTableTemplate: ComponentStory<typeof RichTable> = () => {
   return (
     <RichTable
-      columns={columns}
-      rows={rows}
-      rowIdGetter={(row: IRow) => row.id}
-      isRowSelected={isRowSelectedCb}
+      logic={logic}
       cellRender={defaultRenderCell}
-      onRowSelectToggle={selectCb}
-      onRowDelete={deleteCb}
     />
   )
 };

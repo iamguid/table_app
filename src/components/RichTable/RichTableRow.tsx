@@ -1,3 +1,4 @@
+import { Observer } from "mobx-react-lite";
 import { useCallback, useContext } from "react";
 import { RowRender } from "../Table/TableBody";
 import { RichTableContext } from "./RichTableContext";
@@ -11,16 +12,22 @@ export const RichTableRow: RowRender = ({ children, row }) => {
     } else {
       context.onRowSelectToggle(row, true);
     }
-  }, [context, row])
+  }, [])
 
   const onRowDelete = useCallback(() => {
     context.onRowDelete(row);
-  }, [context, row])
+  }, [])
 
   return (
     <tr>
       <td>
-        <span onClick={onRowClick}>{context.isRowSelected(row) ? 'Selected' : 'Unselected'}</span>
+        <span onClick={onRowClick}>
+          <Observer>{
+            () => {
+              return context.isRowSelected(row) ? <span>Selected</span> : <span>Unselected</span>
+            }}
+          </Observer>
+        </span>
       </td>
       {children}
       <td>
