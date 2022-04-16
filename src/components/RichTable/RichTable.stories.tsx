@@ -1,11 +1,12 @@
 import '../../index.css';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { autorun } from 'mobx';
 import { defaultRenderCell } from '../Table/TableBody';
 import { ITableCol } from '../Table/TableHead';
 import { AbstractRichTableLogic } from './AbstractRichTableLogic';
 import { RichTable } from './RichTable';
+import { richTableEditableCellFactory } from './RichTableEditableCell';
+import { useEffect, useRef } from 'react';
 
 export default {
   title: 'RichTable',
@@ -67,21 +68,43 @@ class RichTableLogicMock extends AbstractRichTableLogic<IRow> {
   }
 }
 
-const logic = new RichTableLogicMock(columns);
+const SimpleRichTableTemplate: ComponentStory<typeof RichTable> = () => {
+  const logicRef = useRef(new RichTableLogicMock(columns));
 
-logic.reloadAllRows();
+  useEffect(() => {
+    logicRef.current.reloadAllRows();
+  });
 
-autorun(() => {
-  console.log(logic.rows);
-})
-
-const RichTableTemplate: ComponentStory<typeof RichTable> = () => {
   return (
     <RichTable
-      logic={logic}
+      logic={logicRef.current}
       cellRender={defaultRenderCell}
     />
   )
 };
 
-export const SimpleRichTable = RichTableTemplate.bind({});
+const EditingFieldsRichTableTemplate: ComponentStory<typeof RichTable> = () => {
+  const logicRef = useRef(new RichTableLogicMock(columns));
+
+  const cellRenderRef = useRef(richTableEditableCellFactory({
+    isEditable: (row, columns, colIndex) => true,
+    getEditComponent: (row, columns, colIndex) => <span>edit</span>,
+    getViewComponent: (row, columns, colIndex) => <span>view</span>,
+    onEditComplete: () => undefined,
+    onEditRollback: () => undefined,
+  }));
+
+  useEffect(() => {
+    logicRef.current.reloadAllRows();
+  });
+
+  return (
+    <RichTable
+      logic={logicRef.current}
+      cellRender={cellRenderRef.current}
+    />
+  )
+};
+
+export const SimpleRichTable = SimpleRichTableTemplate.bind({});
+export const EditingFieldsRichTable = EditingFieldsRichTableTemplate.bind({});

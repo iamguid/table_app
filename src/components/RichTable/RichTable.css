@@ -36,3 +36,7 @@
 .rich-table__row:hover .rich-table__row__delete-icon {
     opacity: 1;
 }
+
+.rich-table__row__cell_editable {
+    cursor: pointer;
+}
