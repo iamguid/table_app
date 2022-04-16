@@ -1,0 +1,25 @@
+.rich-table {}
+
+.rich-table__head__selection-icon {
+    color: white;
+}
+
+.rich-table__row {}
+
+.rich-table__row_selected {
+    background-color: rgba(108, 235, 252, 0.19);
+}
+
+.rich-table__row_selected .rich-table__row__selection-icon {
+    opacity: 1;
+}
+
+.rich-table__row__selection-icon {
+    color: white;
+    opacity: 0;
+    border-color: transparent;
+}
+
+.rich-table__row:hover .rich-table__row__selection-icon {
+    opacity: 1;
+}

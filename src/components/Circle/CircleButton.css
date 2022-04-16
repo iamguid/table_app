@@ -1,0 +1,9 @@
+.circle-button {
+    display: flex;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    align-items: center;
+    justify-content: center;
+    border-color: transparent;
+}

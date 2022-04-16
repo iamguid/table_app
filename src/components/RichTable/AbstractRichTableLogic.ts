@@ -34,10 +34,13 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
       rows: computed,
       isInitialDataLoaded: computed,
       isDataFetching: computed,
+      isSomethingSelected: computed,
 
       sortBy: action.bound,
       filterBy: action.bound,
       searchBy: action.bound,
+      selectAll: action.bound,
+      unselectAll: action.bound,
       onRowSelectToggle: action.bound,
       onRowDelete: action.bound,
       onDeleteSelectedRows: action.bound,
@@ -133,6 +136,17 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
     }
   }
 
+  public selectAll(): void {
+    this.rows.forEach(row => {
+      const rowId = this.rowIdGetter(row);
+      this._selectedRows.add(rowId);
+    })
+  }
+
+  public unselectAll(): void {
+    this._selectedRows.clear();
+  }
+
   public isRowSelected = (row: TRow): boolean => {
     const rowId = this.rowIdGetter(row);
     return this._selectedRows.has(rowId);
@@ -148,6 +162,10 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
 
   public get isDataFetching() {
     return this._isDataFetching;
+  }
+
+  public get isSomethingSelected() {
+    return this._selectedRows.size > 0;
   }
 
   abstract reloadAllRows: () => Promise<void>;

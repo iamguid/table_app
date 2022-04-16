@@ -1,3 +1,5 @@
+import '../../index.css';
+
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Table } from './Table';

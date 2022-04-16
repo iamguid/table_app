@@ -1,9 +1,10 @@
+import '../../index.css';
+
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { autorun } from 'mobx';
 import { defaultRenderCell } from '../Table/TableBody';
 import { ITableCol } from '../Table/TableHead';
 import { AbstractRichTableLogic } from './AbstractRichTableLogic';
-import { IRichTable } from './IRichTable';
 import { RichTable } from './RichTable';
 
 export default {
