@@ -23,3 +23,16 @@
 .rich-table__row:hover .rich-table__row__selection-icon {
     opacity: 1;
 }
+
+.rich-table__row__delete-icon {
+    opacity: 0;
+}
+
+.rich-table__row__delete-icon {
+    color: #EB5757;
+    cursor: pointer;
+}
+
+.rich-table__row:hover .rich-table__row__delete-icon {
+    opacity: 1;
+}

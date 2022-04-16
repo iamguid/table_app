@@ -3,6 +3,7 @@ import { observer, Observer } from "mobx-react-lite";
 import { useCallback, useContext } from "react";
 import { CircleButton } from '../Circle/CircleButton';
 import { CheckIcon } from '../Icons/icons/CheckIcon';
+import { DeleteIcon } from '../Icons/icons/DeleteIcon';
 import { RowRender } from "../Table/TableBody";
 import { RichTableContext } from "./RichTableContext";
 
@@ -41,8 +42,8 @@ export const RichTableRow: RowRender = ({ children, row }) => (
           </CircleButton>
         </td>
         {children}
-        <td>
-          <span onClick={onRowDelete}>Delete</span>
+        <td className='rich-table__row__delete-icon'>
+          <DeleteIcon onClick={onRowDelete} width={15} height={15}/>
         </td>
       </tr>
     )
