@@ -3,12 +3,15 @@
     max-width: 100%;
     min-width: 100%;
     width: 100%;
+    font-size: 14px;
 }
 
 .table > thead th {
     border-bottom: 1px solid #939393;
     text-align: left;
     padding: 9px;
+    font-size: 16px;
+    font-weight: normal;
 }
 
 .table > tbody > tr > td {
