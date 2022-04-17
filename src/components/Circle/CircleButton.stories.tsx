@@ -20,11 +20,11 @@ const CircleButtonTemplate: ComponentStory<typeof CircleButton> = (args) => {
 export const BackgroundCircleButton = CircleButtonTemplate.bind({});
 BackgroundCircleButton.args = {
   size: 20,
-  bgColor: 'aqua',
+  style: {background: 'aqua'},
 }
 
 export const BorderedCircleButton = CircleButtonTemplate.bind({});
 BorderedCircleButton.args = {
   size: 20,
-  borderColor: 'black',
+  style: {borderColor: 'black'},
 }

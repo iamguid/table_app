@@ -7,14 +7,12 @@ export type RowRender<T = any> = React.FC<IRowRenderProps<T>>;
 export type CellRender<T = any> = React.FC<ICellRenderProps<T>>;
 
 export interface IRowRenderProps<TRow> {
-  key: React.Key;
   row: TRow;
   columns: ITableCol[];
   children: React.ReactNode;
 }
 
 export interface ICellRenderProps<TRow> {
-  key: React.Key;
   row: TRow;
   columns: ITableCol[];
   colIndex: number;
@@ -28,7 +26,7 @@ export const defaultRenderCell: CellRender = ({ columns, colIndex, row }) => {
   const col = columns[colIndex];
   const data = row[col.id];
 
-  if (data) {
+  if (typeof data !== 'undefined') {
     return <td>{data}</td>;
   }
 

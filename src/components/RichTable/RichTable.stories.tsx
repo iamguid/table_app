@@ -69,7 +69,7 @@ class RichTableLogicMock extends AbstractRichTableLogic<IRow> {
 }
 
 const SimpleRichTableTemplate: ComponentStory<typeof RichTable> = () => {
-  const logicRef = useRef(new RichTableLogicMock(columns));
+  const logicRef = useRef(new RichTableLogicMock());
 
   useEffect(() => {
     logicRef.current.reloadAllRows();
@@ -78,13 +78,14 @@ const SimpleRichTableTemplate: ComponentStory<typeof RichTable> = () => {
   return (
     <RichTable
       logic={logicRef.current}
+      columns={columns}
       cellRender={defaultRenderCell}
     />
   )
 };
 
 const EditingFieldsRichTableTemplate: ComponentStory<typeof RichTable> = () => {
-  const logicRef = useRef(new RichTableLogicMock(columns));
+  const logicRef = useRef(new RichTableLogicMock());
 
   const cellRenderRef = useRef(richTableEditableCellFactory({
     isEditable: (row, columns, colIndex) => true,
@@ -101,6 +102,7 @@ const EditingFieldsRichTableTemplate: ComponentStory<typeof RichTable> = () => {
   return (
     <RichTable
       logic={logicRef.current}
+      columns={columns}
       cellRender={cellRenderRef.current}
     />
   )

@@ -10,7 +10,6 @@ interface SortState {
 }
 
 export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
-  public _columns: ITableCol[] = [];
   public _rawRows: TRow[] = [];
   public _selectedRows: Set<string> = new Set();
   public _isInitialDataLoaded: boolean = false;
@@ -19,9 +18,8 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
   public _searchText: string = '';
   public _filter: FilterPredicate<TRow> | null = null;
 
-  constructor(cols: ITableCol[]) {
+  constructor() {
     makeObservable(this, {
-      _columns: observable,
       _rawRows: observable,
       _selectedRows: observable,
       _isInitialDataLoaded: observable,
@@ -30,7 +28,6 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
       _searchText: observable,
       _filter: observable,
 
-      columns: computed,
       rows: computed,
       isInitialDataLoaded: computed,
       isDataFetching: computed,
@@ -45,8 +42,6 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
       onRowDelete: action.bound,
       onDeleteSelectedRows: action.bound,
     });
-
-    this._columns = cols;
   }
 
   public sortBy(colId: string, sortOrder: SortOrder) {
@@ -150,10 +145,6 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
   public isRowSelected = (row: TRow): boolean => {
     const rowId = this.rowIdGetter(row);
     return this._selectedRows.has(rowId);
-  }
-
-  public get columns() {
-    return this._columns;
   }
 
   public get isInitialDataLoaded() {

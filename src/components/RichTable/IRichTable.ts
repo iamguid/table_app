@@ -1,10 +1,8 @@
-import { ITableCol } from "../Table/TableHead";
 import { SortOrder } from "./RichTable";
 
 export type FilterPredicate<TRow> = (row: TRow) => boolean;
 
 export interface IRichTable<TRow> {
-  columns: ITableCol[];
   rows: TRow[];
   isInitialDataLoaded: boolean;
   isDataFetching: boolean;

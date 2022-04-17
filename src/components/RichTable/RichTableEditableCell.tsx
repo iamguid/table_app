@@ -28,7 +28,7 @@ export const richTableEditableCellFactory = ({
 
     const col = columns[colIndex];
     const data = row[col.id];
-    const isCellEditable = isEditable(row, columns, colIndex) && Boolean(data);
+    const isCellEditable = isEditable(row, columns, colIndex) && typeof data !== 'undefined';
 
     const viewComponent = getViewComponent(row, columns, colIndex);
     const editComponent = getEditComponent(row, columns, colIndex);
