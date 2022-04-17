@@ -10,12 +10,13 @@ export interface IRichTable<TRow> {
   sortBy: (colId: string, sortOrder: SortOrder) => void;
   filterBy: (filter: FilterPredicate<TRow>) => void;
   searchBy: (searchText: string) => void;
-  rowIdGetter: (row: TRow) => string;
+  rowIdGetter: (row: TRow) => number;
   isRowSelected: (row: TRow) => boolean;
   selectAll: () => void;
   unselectAll: () => void;
   onRowSelectToggle: (row: TRow, select: boolean) => void;
   onRowDelete: (row: TRow) => Promise<void>;
+  onRowUpdate: (updatedRow: TRow) => Promise<void>;
   onDeleteSelectedRows: () => Promise<void>;
   reloadAllRows: () => Promise<void>;
 }

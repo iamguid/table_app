@@ -1,6 +1,4 @@
-import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
-import { asObservableObject, ObservableObjectAdministration } from "mobx/dist/internal";
-import { ITableCol } from "../Table/TableHead";
+import { action, computed, runInAction, makeObservable, observable } from "mobx";
 import { FilterPredicate, IRichTable } from "./IRichTable";
 import { SortOrder } from "./RichTable";
 
@@ -11,7 +9,7 @@ interface SortState {
 
 export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
   public _rawRows: TRow[] = [];
-  public _selectedRows: Set<string> = new Set();
+  public _selectedRows: Set<number> = new Set();
   public _isInitialDataLoaded: boolean = false;
   public _isDataFetching: boolean = false;
   public _sort: SortState | null = null;
@@ -40,6 +38,7 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
       unselectAll: action.bound,
       onRowSelectToggle: action.bound,
       onRowDelete: action.bound,
+      onRowUpdate: action.bound,
       onDeleteSelectedRows: action.bound,
     });
   }
@@ -120,6 +119,18 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
     }
   }
 
+  public async onRowUpdate(updatedRow: TRow): Promise<void> {
+    const rowId = this.rowIdGetter(updatedRow);
+    try {
+      await this.rowUpdateRequest(updatedRow);
+
+      const currentRowIndex = this._rawRows.findIndex(row => this.rowIdGetter(row) === rowId);
+      this._rawRows = this._rawRows.map((row, index) => index == currentRowIndex ? updatedRow : row);
+    } catch (error) {
+      console.error('Could not update row', error)
+    }
+  }
+
   public async onDeleteSelectedRows(): Promise<void> {
     try {
       await this.rowsDeleteRequest(this._selectedRows);
@@ -160,7 +171,8 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
   }
 
   abstract reloadAllRows: () => Promise<void>;
-  abstract rowIdGetter: (row: TRow) => string;
-  abstract rowDeleteRequest: (rowId: string) => Promise<void>;
-  abstract rowsDeleteRequest: (rowsIds: Set<string>) => Promise<void>;
+  abstract rowIdGetter: (row: TRow) => number;
+  abstract rowUpdateRequest: (newRow: TRow) => Promise<void>;
+  abstract rowDeleteRequest: (rowId: number) => Promise<void>;
+  abstract rowsDeleteRequest: (rowsIds: Set<number>) => Promise<void>;
 }

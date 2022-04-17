@@ -1,5 +1,5 @@
 export interface IOrder {
-    id?: string;
+    id?: number;
     msisdn: string;
     name: string;
     trpl: number;
@@ -8,7 +8,7 @@ export interface IOrder {
 }
 
 export class OrederModel implements IOrder {
-    public id?: string = '';
+    public id?: number = 0;
     public msisdn: string = '';
     public name: string = '';
     public trpl: number = 0;

@@ -39,4 +39,5 @@
 
 .rich-table__row__cell_editable {
     cursor: pointer;
+    min-width: 200px;
 }

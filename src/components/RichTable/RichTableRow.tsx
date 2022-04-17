@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { observer, Observer } from "mobx-react-lite";
+import { Observer } from "mobx-react-lite";
 import { useCallback, useContext } from "react";
 import { CircleButton } from '../Circle/CircleButton';
 import { CheckIcon } from '../Icons/icons/CheckIcon';

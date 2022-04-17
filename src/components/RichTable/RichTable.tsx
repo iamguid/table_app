@@ -23,6 +23,7 @@ export const RichTable = observer(({logic, columns, cellRender}: IRichTableProps
     isSomethingSelected: logic.isSomethingSelected,
     onRowSelectToggle: logic.onRowSelectToggle,
     onRowDelete: logic.onRowDelete,
+    onRowUpdate: logic.onRowUpdate,
     selectAll: logic.selectAll,
     unselectAll: logic.unselectAll,
   }}>

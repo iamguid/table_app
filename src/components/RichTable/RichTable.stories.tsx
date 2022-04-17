@@ -1,12 +1,13 @@
 import '../../index.css';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { defaultRenderCell } from '../Table/TableBody';
+import { defaultRenderCell, defaultRenderCellData } from '../Table/TableBody';
 import { ITableCol } from '../Table/TableHead';
 import { AbstractRichTableLogic } from './AbstractRichTableLogic';
 import { RichTable } from './RichTable';
 import { richTableEditableCellFactory } from './RichTableEditableCell';
 import { useEffect, useRef } from 'react';
+import { EditString } from './EditComponents/EditString';
 
 export default {
   title: 'RichTable',
@@ -14,7 +15,7 @@ export default {
 } as ComponentMeta<typeof RichTable>;
 
 interface IRow {
-  id: string;
+  id: number;
   col1: string;
   col2: string;
 }
@@ -31,10 +32,10 @@ const columns: ITableCol[] = [
 ];
 
 const rows: IRow[] = [
-  {id: '1', col1: 'row 1 col 1', col2: 'row 1 col 2'},
-  {id: '2', col1: 'row 2 col 1', col2: 'row 2 col 2'},
-  {id: '3', col1: 'row 3 col 1', col2: 'row 3 col 2'},
-  {id: '4', col1: 'row 4 col 1', col2: 'row 4 col 2'},
+  {id: 1, col1: 'row 1 col 1', col2: 'row 1 col 2'},
+  {id: 2, col1: 'row 2 col 1', col2: 'row 2 col 2'},
+  {id: 3, col1: 'row 3 col 1', col2: 'row 3 col 2'},
+  {id: 4, col1: 'row 4 col 1', col2: 'row 4 col 2'},
 ];
 
 class RichTableLogicMock extends AbstractRichTableLogic<IRow> {
@@ -47,7 +48,7 @@ class RichTableLogicMock extends AbstractRichTableLogic<IRow> {
     });
   }
 
-  public rowDeleteRequest = async (rowId: string): Promise<void> => {
+  public rowDeleteRequest = async (rowId: number): Promise<void> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
@@ -55,7 +56,7 @@ class RichTableLogicMock extends AbstractRichTableLogic<IRow> {
     });
   }
 
-  public rowsDeleteRequest = async (rowsIds: Set<string>): Promise<void> => {
+  public rowUpdateRequest = async (updatedRow: IRow): Promise<void> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
@@ -63,7 +64,15 @@ class RichTableLogicMock extends AbstractRichTableLogic<IRow> {
     });
   }
 
-  public rowIdGetter = (row: IRow): string => {
+  public rowsDeleteRequest = async (rowsIds: Set<number>): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000)
+    });
+  }
+
+  public rowIdGetter = (row: IRow): number => {
       return row.id;
   }
 }
@@ -88,11 +97,9 @@ const EditingFieldsRichTableTemplate: ComponentStory<typeof RichTable> = () => {
   const logicRef = useRef(new RichTableLogicMock());
 
   const cellRenderRef = useRef(richTableEditableCellFactory({
-    isEditable: (row, columns, colIndex) => true,
-    getEditComponent: (row, columns, colIndex) => <span>edit</span>,
-    getViewComponent: (row, columns, colIndex) => <span>view</span>,
-    onEditComplete: () => undefined,
-    onEditRollback: () => undefined,
+    isEditable: () => true,
+    editComponent: EditString,
+    viewComponent: defaultRenderCellData,
   }));
 
   useEffect(() => {

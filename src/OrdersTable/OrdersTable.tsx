@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import { EditString } from "../components/RichTable/EditComponents/EditString";
 import { RichTable } from "../components/RichTable/RichTable";
 import { richTableEditableCellFactory } from "../components/RichTable/RichTableEditableCell";
-import { defaultRenderCell } from "../components/Table/TableBody";
+import { defaultRenderCellData } from "../components/Table/TableBody";
 import { ITableCol } from "../components/Table/TableHead"
 import { ordersApi } from "../ServiceLocator";
 import { OrdersTableLogic } from "./OrdersTableLogic";
@@ -21,16 +21,17 @@ export const OrdersTable = ({}: IOrdersTableProps) => {
   ]);
 
   const cellRenderRef = useRef(richTableEditableCellFactory({
-    isEditable: (row, columns, colIndex) => true,
-    getEditComponent: (row, columns, colIndex) => <EditString row={row} columns={columns} colIndex={colIndex}/>,
-    getViewComponent: (row, columns, colIndex) => defaultRenderCell({row, columns, colIndex}),
-    onEditComplete: () => undefined,
-    onEditRollback: () => undefined,
+    isEditable: ({row, columns, colIndex}) => {
+      const column = columns[colIndex];
+      return column.id !== 'id';
+    },
+    editComponent: EditString,
+    viewComponent: defaultRenderCellData,
   }));
 
   useEffect(() => {
     logicRef.current.reloadAllRows();
-  });
+  }, []);
 
   return (
     <RichTable 

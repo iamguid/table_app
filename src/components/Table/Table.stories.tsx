@@ -11,7 +11,7 @@ export default {
 } as ComponentMeta<typeof Table>;
 
 interface IRow {
-  id: string;
+  id: number;
   col1: string;
   col2: string;
 }
@@ -28,10 +28,10 @@ const columns: ITableCol[] = [
 ];
 
 const rows: IRow[] = [
-  {id: '1', col1: 'row 1 col 1', col2: 'row 1 col 2'},
-  {id: '2', col1: 'row 2 col 1', col2: 'row 2 col 2'},
-  {id: '3', col1: 'row 3 col 1', col2: 'row 3 col 2'},
-  {id: '4', col1: 'row 4 col 1', col2: 'row 4 col 2'},
+  {id: 1, col1: 'row 1 col 1', col2: 'row 1 col 2'},
+  {id: 2, col1: 'row 2 col 1', col2: 'row 2 col 2'},
+  {id: 3, col1: 'row 3 col 1', col2: 'row 3 col 2'},
+  {id: 4, col1: 'row 4 col 1', col2: 'row 4 col 2'},
 ];
 
 const SimpleTableTemplate: ComponentStory<typeof Table> = () => {

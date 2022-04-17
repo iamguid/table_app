@@ -1,12 +1,62 @@
-import { useState } from "react";
+import { createRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Input } from "../../Input/Input";
-import { CellRender } from "../../Table/TableBody";
+import { RichTableEditableCellDataRender } from "../RichTableEditableCell";
 
-export const EditString: CellRender = ({row, colIndex, columns}) => {
+export const EditString: RichTableEditableCellDataRender = ({
+  row,
+  colIndex,
+  columns,
+  onEditComplete,
+}) => {
   const column = columns[colIndex];
   const data = row[column.id];
 
-  const [state, setState] = useState(data);
+  const [value, setValue] = useState(data);
 
-  return <Input value={state} onChange={setState} />
+  useEffect(() => {
+    setValue(data);
+  }, [data])
+
+  const inputRef = useRef(createRef<HTMLInputElement>());
+
+  const saveDataCb = useCallback((save: boolean) => {
+    if (save && data !== value) {
+      onEditComplete(value);
+    } else {
+      onEditComplete();
+      setValue(data);
+    }
+  }, [data, value])
+
+  const onBlurCb = useCallback(() => {
+    saveDataCb(false);
+  }, [saveDataCb])
+
+  const onKeyUpCb = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      saveDataCb(false);
+    }
+
+    if (e.key === 'Enter') {
+      saveDataCb(true);
+    }
+  }, [saveDataCb])
+
+  useLayoutEffect(() => {
+    const input = inputRef.current.current;
+    input?.addEventListener('blur', onBlurCb);
+    input?.addEventListener('keyup', onKeyUpCb);
+    return () => {
+      input?.removeEventListener('blur', onBlurCb)
+      input?.removeEventListener('keyup', onKeyUpCb);
+    }
+  })
+
+  return (
+    <Input 
+      value={value}
+      onChange={setValue}
+      inputProps={{autoFocus: true, ref: inputRef.current}} 
+    />
+  )
 }
