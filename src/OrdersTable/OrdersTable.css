@@ -1,0 +1,36 @@
+.orders-table-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin: 20px;
+    overflow: hidden;
+    overflow-x: auto;
+    clear: both;
+}
+
+.orders-tab-container__footer {
+    font-size: 12px;
+    border-top: 1px solid #939393;
+    padding: 20px 0;
+}
+
+.orders-tab-container__footer__group {
+    padding-left: 15px;
+}
+
+.orders-tab-container__footer__group:first-child {
+    padding-left: 0;
+}
+
+.orders-tab-container__footer__group-item {
+    padding-left: 10px;
+}
+
+.orders-tab-container__footer__group-item:first-child {
+    padding-left: 0;
+}
+
+.orders-tab-container__footer a {
+    cursor: pointer;
+    border-bottom: 1px dashed #373737;
+}

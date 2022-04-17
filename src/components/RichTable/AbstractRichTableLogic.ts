@@ -30,6 +30,9 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
       isInitialDataLoaded: computed,
       isDataFetching: computed,
       isSomethingSelected: computed,
+      totalCount: computed,
+      filteredCount: computed,
+      selectedCount: computed,
 
       sortBy: action.bound,
       filterBy: action.bound,
@@ -114,6 +117,8 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
 
       this._rawRows = this._rawRows
         .filter(row => this.rowIdGetter(row) !== rowId);
+
+      this._selectedRows.delete(rowId);
     } catch (error) {
       console.error('Could not delete row', error)
     }
@@ -136,7 +141,9 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
       await this.rowsDeleteRequest(this._selectedRows);
 
       this._rawRows = this._rawRows
-        .filter(row => this._selectedRows.has(this.rowIdGetter(row)));
+        .filter(row => !this._selectedRows.has(this.rowIdGetter(row)));
+
+      this.unselectAll();
     } catch (error) {
       console.error('Could not delete selected rows', error)
     }
@@ -168,6 +175,18 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
 
   public get isSomethingSelected() {
     return this._selectedRows.size > 0;
+  }
+
+  public get totalCount() {
+    return this._rawRows.length;
+  }
+
+  public get filteredCount() {
+    return this.rows.length;
+  }
+
+  public get selectedCount() {
+    return this._selectedRows.size;
   }
 
   abstract reloadAllRows: () => Promise<void>;

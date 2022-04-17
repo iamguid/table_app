@@ -1,5 +1,8 @@
 .table {
     border-spacing: 0;
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
 }
 
 .table > thead th {
