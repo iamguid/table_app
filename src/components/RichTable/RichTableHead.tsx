@@ -1,3 +1,4 @@
+import { Observer } from "mobx-react-lite";
 import { useCallback, useContext } from "react";
 import { CircleButton } from "../Circle/CircleButton";
 import { CheckIcon } from "../Icons/icons/CheckIcon";
@@ -6,32 +7,34 @@ import { HeadRender } from "../Table/TableHead";
 import { RichTableContext } from "./RichTableContext";
 
 export const RichTableHead: HeadRender = ({ children }) => {
-  const context = useContext(RichTableContext);
-
-  const isSomethingSelected = context.logic!.isSomethingSelected;
+  const logic = useContext(RichTableContext).logic!;
 
   const onSelectClick = useCallback(() => {
-    if (isSomethingSelected) {
-      context.logic!.unselectAll();
+    if (logic.isSomethingSelected) {
+      logic.unselectAll();
     } else {
-      context.logic!.selectAll();
+      logic.selectAll();
     }
-  }, [isSomethingSelected])
+  }, [logic.isSomethingSelected])
 
   return (
-    <tr>
-      <th className="rich-table__head__selection-icon">
-        <CircleButton onClick={onSelectClick} size={20} style={{
-          background: '#6CEBFC',
-          cursor: 'pointer',
-        }}>
-          {isSomethingSelected 
-            ? <MinusIcon width={10} height={10} /> 
-            : <CheckIcon width={10} height={10} />}
-        </CircleButton>
-      </th>
-      {children}
-      <th></th>
-    </tr>
+    <Observer>{() => {
+      return (
+        <tr>
+          <th className="rich-table__head__selection-icon">
+            <CircleButton onClick={onSelectClick} size={20} style={{
+              background: '#6CEBFC',
+              cursor: 'pointer',
+            }}>
+              {logic.isSomethingSelected 
+                ? <MinusIcon width={10} height={10} /> 
+                : <CheckIcon width={10} height={10} />}
+            </CircleButton>
+          </th>
+          {children}
+          <th></th>
+        </tr>
+      )
+    }}</Observer>
   )
 }
