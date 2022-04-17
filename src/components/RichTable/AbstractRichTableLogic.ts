@@ -34,6 +34,7 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
       filteredCount: computed,
       selectedCount: computed,
       sortState: computed,
+      searchText: computed,
 
       sortBy: action.bound,
       filterBy: action.bound,
@@ -82,11 +83,22 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
     }
 
     const searchPredicate = (row: TRow) => {
-      for (const field in row) {
-        const value = row[field];
+      if (this._searchText == '') {
+        return true;
+      }
+
+      for (const field of Object.getOwnPropertyNames(row)) {
+        const value = (row as any)[field];
 
         if (value) {
-          return (value as any).toString().includes(this._searchText);
+          const includes = (value as any)
+            .toString()
+            .toLowerCase()
+            .includes(this._searchText.toLowerCase());
+          
+          if (includes) {
+            return true;
+          }
         }
       }
 
@@ -164,6 +176,10 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
   public isRowSelected = (row: TRow): boolean => {
     const rowId = this.rowIdGetter(row);
     return this._selectedRows.has(rowId);
+  }
+
+  public get searchText(): string {
+    return this._searchText;
   }
 
   public get sortState(): ISortState | null {

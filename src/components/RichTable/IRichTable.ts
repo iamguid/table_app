@@ -9,6 +9,7 @@ export interface IRichTable<TRow> {
   isDataFetching: boolean;
   isSomethingSelected: boolean;
   sortState: ISortState | null;
+  searchText: string,
   sortBy: (colId: string, sortOrder: SortOrder) => void;
   filterBy: (filter: FilterPredicate<TRow>) => void;
   searchBy: (searchText: string) => void;

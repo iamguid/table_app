@@ -11,6 +11,7 @@ import { ITableCol } from "../components/Table/TableHead"
 import { ordersApi } from "../ServiceLocator";
 import { OrdersTableFooter } from "./OrdersTableFooter";
 import { OrdersTableLogic } from "./OrdersTableLogic";
+import { OrdersTableHeader } from "./OrdersTableHeader";
 
 export interface IOrdersTableProps { }
 
@@ -49,6 +50,7 @@ export const OrdersTable = ({}: IOrdersTableProps) => {
 
   return (
     <div className="orders-table-container">
+      <OrdersTableHeader logic={logicRef.current} />
       <RichTable 
         logic={logicRef.current}
         columns={columnsRef.current}

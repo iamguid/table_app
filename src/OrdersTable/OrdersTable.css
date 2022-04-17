@@ -8,6 +8,17 @@
     clear: both;
 }
 
+.orders-tab-container__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.orders-tab-container__header > h2 {
+    font-weight: normal;
+}
+
 .orders-tab-container__footer {
     font-size: 12px;
     border-top: 1px solid #939393;
