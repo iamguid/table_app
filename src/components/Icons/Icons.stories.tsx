@@ -1,9 +1,9 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { useState } from 'react';
-
 import { IIconProps } from './IIconProps';
 import { CheckIcon } from './icons/CheckIcon';
 import { MinusIcon } from './icons/MinusIcon';
+import { DeleteIcon } from './icons/DeleteIcon';
+import { UndoIcon } from './icons/UndoIcon';
+import { EditIcon } from './icons/EditIcon';
 
 export default {
   title: 'Icons',
@@ -21,6 +21,9 @@ const defaultIconProps: Partial<IIconProps> = {
 const icons: React.FC<IIconProps>[] = [
   CheckIcon,
   MinusIcon,
+  DeleteIcon,
+  UndoIcon,
+  EditIcon,
 ]
 
 const IconsTableTemplate: React.FC = () => (

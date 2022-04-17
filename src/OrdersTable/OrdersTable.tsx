@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react"
+import { EditableCell } from "../components/RichTable/EditComponents/EditableCell";
 import { EditString } from "../components/RichTable/EditComponents/EditString";
 import { RichTable } from "../components/RichTable/RichTable";
 import { richTableEditableCellFactory } from "../components/RichTable/RichTableEditableCell";
-import { defaultRenderCellData } from "../components/Table/TableBody";
 import { ITableCol } from "../components/Table/TableHead"
 import { ordersApi } from "../ServiceLocator";
 import { OrdersTableLogic } from "./OrdersTableLogic";
@@ -15,6 +15,7 @@ export const OrdersTable = ({}: IOrdersTableProps) => {
   const columnsRef = useRef<ITableCol[]>([
     { id: 'id', label: '№' },
     { id: 'msisdn', label: 'Телефон' },
+    { id: 'name', label: 'ФИО' },
     { id: 'trpl', label: 'Тариф' },
     { id: 'status', label: 'Статус' },
     { id: 'date', label: 'Дата' },
@@ -26,7 +27,7 @@ export const OrdersTable = ({}: IOrdersTableProps) => {
       return column.id !== 'id';
     },
     editComponent: EditString,
-    viewComponent: defaultRenderCellData,
+    viewComponent: EditableCell,
   }));
 
   useEffect(() => {

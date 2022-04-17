@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react"
-import { CellRender, ICellDataRenderProps, ICellRenderProps } from "../Table/TableBody"
+import { CellRender, defaultRenderCellData, ICellDataRenderProps, ICellRenderProps } from "../Table/TableBody"
 import { ITableCol } from "../Table/TableHead"
 import { RichTableContext } from "./RichTableContext";
 
@@ -64,13 +64,17 @@ export const richTableEditableCellFactory = ({
 
     if (isCellEditable) {
       return (
-        <td onClick={onCellClickCb} className="rich-table__row__cell_editable">
+        <td onClick={onCellClickCb} className="rich-table__row__cell rich-table__row__cell_editable">
           {isEditing && edit}
           {!isEditing && view}
         </td>
-      );
+      )
     }
 
-    return <td>{view}</td>
+    return (
+      <td className="rich-table__row__cell">
+        {defaultRenderCellData({ row, columns, colIndex })}
+      </td>
+    )
   }
 }

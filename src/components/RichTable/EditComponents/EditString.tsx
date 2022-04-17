@@ -1,4 +1,6 @@
 import { createRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { EditIcon } from "../../Icons/icons/EditIcon";
+import { UndoIcon } from "../../Icons/icons/UndoIcon";
 import { Input } from "../../Input/Input";
 import { RichTableEditableCellDataRender } from "../RichTableEditableCell";
 
@@ -53,10 +55,17 @@ export const EditString: RichTableEditableCellDataRender = ({
   })
 
   return (
-    <Input 
-      value={value}
-      onChange={setValue}
-      inputProps={{autoFocus: true, ref: inputRef.current}} 
-    />
+    <div>
+      <Input 
+        value={value}
+        onChange={setValue}
+        inputProps={{
+          autoFocus: true,
+          ref: inputRef.current,
+          className: 'rich-table__edit-component'
+        }} 
+      />
+      <UndoIcon width={15} height={15}/>
+    </div>
   )
 }

@@ -1,5 +1,9 @@
 .rich-table {}
 
+.rich-table__edit-component {
+    width: calc(100% - 20px);
+}
+
 .rich-table__head__selection-icon {
     color: white;
 }
@@ -37,7 +41,23 @@
     opacity: 1;
 }
 
+.rich-table__row__cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 250px;
+    min-width: 20px;
+}
+
 .rich-table__row__cell_editable {
     cursor: pointer;
-    min-width: 200px;
+}
+
+.rich-table__row__cell_editable svg {
+    padding-left: 7px;
+    opacity: 0;
+}
+
+.rich-table__row__cell_editable:hover svg {
+    opacity: 1;
 }
