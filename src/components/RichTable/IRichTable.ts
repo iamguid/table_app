@@ -1,3 +1,4 @@
+import { ISortState } from "./AbstractRichTableLogic";
 import { SortOrder } from "./RichTable";
 
 export type FilterPredicate<TRow> = (row: TRow) => boolean;
@@ -7,6 +8,7 @@ export interface IRichTable<TRow> {
   isInitialDataLoaded: boolean;
   isDataFetching: boolean;
   isSomethingSelected: boolean;
+  sortState: ISortState | null;
   sortBy: (colId: string, sortOrder: SortOrder) => void;
   filterBy: (filter: FilterPredicate<TRow>) => void;
   searchBy: (searchText: string) => void;

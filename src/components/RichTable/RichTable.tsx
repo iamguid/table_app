@@ -18,15 +18,7 @@ export type IRichTableProps = {
 }
 
 export const RichTable = observer(({logic, columns, cellRender}: IRichTableProps) => (
-  <RichTableContext.Provider value={{
-    isRowSelected: logic.isRowSelected,
-    isSomethingSelected: logic.isSomethingSelected,
-    onRowSelectToggle: logic.onRowSelectToggle,
-    onRowDelete: logic.onRowDelete,
-    onRowUpdate: logic.onRowUpdate,
-    selectAll: logic.selectAll,
-    unselectAll: logic.unselectAll,
-  }}>
+  <RichTableContext.Provider value={{logic}}>
     <Table columns={columns}>
       <Table.Head
         renderHead={RichTableHead}

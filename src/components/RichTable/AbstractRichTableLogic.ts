@@ -2,7 +2,7 @@ import { action, computed, runInAction, makeObservable, observable } from "mobx"
 import { FilterPredicate, IRichTable } from "./IRichTable";
 import { SortOrder } from "./RichTable";
 
-interface SortState {
+export interface ISortState {
   colId: string;
   sortOrder: SortOrder;
 }
@@ -12,7 +12,7 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
   public _selectedRows: Set<number> = new Set();
   public _isInitialDataLoaded: boolean = false;
   public _isDataFetching: boolean = false;
-  public _sort: SortState | null = null;
+  public _sortState: ISortState | null = null;
   public _searchText: string = '';
   public _filter: FilterPredicate<TRow> | null = null;
 
@@ -22,7 +22,7 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
       _selectedRows: observable,
       _isInitialDataLoaded: observable,
       _isDataFetching: observable,
-      _sort: observable,
+      _sortState: observable,
       _searchText: observable,
       _filter: observable,
 
@@ -33,6 +33,7 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
       totalCount: computed,
       filteredCount: computed,
       selectedCount: computed,
+      sortState: computed,
 
       sortBy: action.bound,
       filterBy: action.bound,
@@ -47,7 +48,7 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
   }
 
   public sortBy(colId: string, sortOrder: SortOrder) {
-    this._sort = { colId, sortOrder };
+    this._sortState = { colId, sortOrder };
   }
 
   public searchBy(searchText: string) {
@@ -60,23 +61,23 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
 
   public get rows() {
     const comparator = (a: TRow, b: TRow) => {
-      if (!this._sort) {
+      if (!this._sortState) {
         return 0;
       }
 
-      const aField = (a as any)[this._sort.colId];
-      const bField = (b as any)[this._sort.colId];
+      const aField = (a as any)[this._sortState.colId];
+      const bField = (b as any)[this._sortState.colId];
 
       if (!aField || !bField) {
         return 0;
       }
 
-      if (this._sort.sortOrder === 'asc') {
-        return aField.toString().localCompare(bField.toString())
+      if (this._sortState.sortOrder === 'asc') {
+        return bField.toString().localeCompare(aField.toString())
       }
 
-      if (this._sort.sortOrder === 'desc') {
-        return bField.toString().localCompare(aField.toString())
+      if (this._sortState.sortOrder === 'desc') {
+        return aField.toString().localeCompare(bField.toString())
       }
     }
 
@@ -163,6 +164,10 @@ export abstract class AbstractRichTableLogic<TRow> implements IRichTable<TRow> {
   public isRowSelected = (row: TRow): boolean => {
     const rowId = this.rowIdGetter(row);
     return this._selectedRows.has(rowId);
+  }
+
+  public get sortState(): ISortState | null {
+    return this._sortState;
   }
 
   public get isInitialDataLoaded() {

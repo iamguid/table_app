@@ -8,13 +8,13 @@ import { RichTableContext } from "./RichTableContext";
 export const RichTableHead: HeadRender = ({ children }) => {
   const context = useContext(RichTableContext);
 
-  const isSomethingSelected = context.isSomethingSelected;
+  const isSomethingSelected = context.logic!.isSomethingSelected;
 
   const onSelectClick = useCallback(() => {
     if (isSomethingSelected) {
-      context.unselectAll();
+      context.logic!.unselectAll();
     } else {
-      context.selectAll();
+      context.logic!.selectAll();
     }
   }, [isSomethingSelected])
 

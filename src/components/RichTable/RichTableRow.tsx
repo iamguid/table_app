@@ -11,20 +11,20 @@ export const RichTableRow: RowRender = ({ children, row }) => {
   const context = useContext(RichTableContext);
 
   const onRowClick = useCallback(() => {
-    if (context.isRowSelected(row)) {
-      context.onRowSelectToggle(row, false);
+    if (context.logic!.isRowSelected(row)) {
+      context.logic!.onRowSelectToggle(row, false);
     } else {
-      context.onRowSelectToggle(row, true);
+      context.logic!.onRowSelectToggle(row, true);
     }
   }, [])
 
   const onRowDelete = useCallback(() => {
-    context.onRowDelete(row);
+    context.logic!.onRowDelete(row);
   }, [])
 
   return (
     <Observer>{() => {
-      const isRowSelected = context.isRowSelected(row);
+      const isRowSelected = context.logic!.isRowSelected(row);
 
       const className = cn(
         'rich-table__row',

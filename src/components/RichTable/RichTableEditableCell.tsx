@@ -37,7 +37,7 @@ export const richTableEditableCellFactory = ({
       if (updatedData) {
         const updatedRow = Object.assign({}, row, {[col.id]: updatedData});
         setIsLoading(true);
-        await context.onRowUpdate(updatedRow);
+        await context.logic!.onRowUpdate(updatedRow);
         setIsLoading(false);
       }
 

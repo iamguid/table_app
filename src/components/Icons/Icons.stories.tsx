@@ -4,6 +4,7 @@ import { MinusIcon } from './icons/MinusIcon';
 import { DeleteIcon } from './icons/DeleteIcon';
 import { UndoIcon } from './icons/UndoIcon';
 import { EditIcon } from './icons/EditIcon';
+import { SortIcon } from './icons/SortIcon';
 
 export default {
   title: 'Icons',
@@ -24,6 +25,7 @@ const icons: React.FC<IIconProps>[] = [
   DeleteIcon,
   UndoIcon,
   EditIcon,
+  SortIcon,
 ]
 
 const IconsTableTemplate: React.FC = () => (

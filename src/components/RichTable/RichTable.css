@@ -8,6 +8,34 @@
     color: white;
 }
 
+.rich-table__head__th {
+    user-select: none;
+    cursor: pointer;
+    min-width: 35px;
+}
+
+.rich-table__head__th__inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.rich-table__head__th__inner > svg {
+    margin-left: 5px;
+    display: inline;
+    color: grey;
+    opacity: 0;
+}
+
+.rich-table__head__th_selected > .rich-table__head__th__inner > svg {
+    color: black;
+    opacity: 1;
+}
+
+.rich-table__head__th:hover > .rich-table__head__th__inner > svg {
+    opacity: 1;
+}
+
 .rich-table__row {}
 
 .rich-table__row_selected {
